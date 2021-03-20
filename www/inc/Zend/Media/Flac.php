@@ -72,6 +72,9 @@ final class Zend_Media_Flac
     /** The picture metadata block */
     const PICTURE        = 6;
 
+    /** The max iteration count of metadata collection */
+    const MAX_ITERATION_COUNT = 32;
+
     /** @var Zend_Io_Reader */
     private $_reader;
 
@@ -173,11 +176,17 @@ final class Zend_Media_Flac
                 break;
             }
 
-			// r44d exit loop if > 7 iterations
-			$count++;
-			if ($count > 7) {
+            // r44d exit loop if > 7 iterations
+            $count++;
+            if ($count > self::MAX_ITERATION_COUNT) {
+                /*// r44d DEBUG
+                $msg = 'FLAC: max iterations reached.';
+                $fh = fopen('/var/log/moode.log', 'a');
+                fwrite($fh, date('Ymd His ') . $msg . "\n");
+                fclose($fh);
+                */
                 break;
-			}
+            }
         }
     }
 
